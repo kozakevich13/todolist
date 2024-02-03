@@ -4,6 +4,8 @@ import "./App.css";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editedTaskText, setEditedTaskText] = useState("");
 
   const addTask = () => {
     if (newTask.trim() !== "") {
@@ -22,6 +24,26 @@ function App() {
         task.id === taskId ? { ...task, completed: !task.completed } : task
       )
     );
+  };
+
+  const startEditingTask = (taskId, taskText) => {
+    setEditingTaskId(taskId);
+    setEditedTaskText(taskText);
+  };
+
+  const saveEditedTask = () => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === editingTaskId ? { ...task, text: editedTaskText } : task
+      )
+    );
+    setEditingTaskId(null);
+    setEditedTaskText("");
+  };
+
+  const cancelEditingTask = () => {
+    setEditingTaskId(null);
+    setEditedTaskText("");
   };
 
   return (
@@ -52,20 +74,55 @@ function App() {
               checked={task.completed}
               onChange={() => checkTask(task.id)}
             />
-            <span
-              style={{
-                textDecoration: task.completed ? "line-through" : "none",
-              }}
-            >
-              {task.text}
-            </span>
 
-            <button
-              className="btn btn-danger ml-2"
-              onClick={() => removeTask(task.id)}
-            >
-              Remove
-            </button>
+            {editingTaskId === task.id ? (
+              <input
+                type="text"
+                className="form-control"
+                value={editedTaskText}
+                onChange={(e) => setEditedTaskText(e.target.value)}
+              />
+            ) : (
+              <span
+                style={{
+                  textDecoration: task.completed ? "line-through" : "none",
+                }}
+              >
+                {task.text}
+              </span>
+            )}
+
+            {editingTaskId === task.id ? (
+              <>
+                <button
+                  className="btn btn-success ml-2"
+                  onClick={saveEditedTask}
+                >
+                  Save
+                </button>
+                <button
+                  className="btn btn-secondary ml-2"
+                  onClick={cancelEditingTask}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <div>
+                <button
+                  className="btn btn-primary ml-2"
+                  onClick={() => startEditingTask(task.id, task.text)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger ml-2"
+                  onClick={() => removeTask(task.id)}
+                >
+                  Remove
+                </button>
+              </div>
+            )}
           </li>
         ))}
       </ul>
