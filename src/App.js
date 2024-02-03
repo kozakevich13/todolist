@@ -6,6 +6,7 @@ function App() {
   const [newTask, setNewTask] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editedTaskText, setEditedTaskText] = useState("");
+  const [filter, setFilter] = useState("all");
 
   const addTask = () => {
     if (newTask.trim() !== "") {
@@ -46,6 +47,16 @@ function App() {
     setEditedTaskText("");
   };
 
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "completed") {
+      return task.completed;
+    } else if (filter === "uncompleted") {
+      return !task.completed;
+    } else {
+      return true;
+    }
+  });
+
   return (
     <div className="App">
       <h1>Todo List</h1>
@@ -58,12 +69,38 @@ function App() {
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
         />
-        <button className="btn btn-primary" onClick={addTask}>
-          Add Task
+        <button className="btn btn-primary mx-2" onClick={addTask}>
+          Add task
         </button>
+        <div className="mb-3 d-flex justify-content-center">
+          <button
+            className={`btn btn-outline-primary mx-2 ${
+              filter === "all" && "active"
+            }`}
+            onClick={() => setFilter("all")}
+          >
+            All
+          </button>
+          <button
+            className={`btn btn-outline-success mx-2 ${
+              filter === "completed" && "active"
+            }`}
+            onClick={() => setFilter("completed")}
+          >
+            Completed
+          </button>
+          <button
+            className={`btn btn-outline-danger mx-2 ${
+              filter === "uncompleted" && "active"
+            }`}
+            onClick={() => setFilter("uncompleted")}
+          >
+            Uncompleted
+          </button>
+        </div>
       </div>
       <ul className="mb-3 mx-5 justify-content-center list-unstyled">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <li
             key={task.id}
             className="p-2 mb-2 d-flex justify-content-between align-items-center w-75 mx-auto"
