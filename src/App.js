@@ -67,7 +67,7 @@ function App() {
   return (
     <div className="App">
       <h1>Todo List</h1>
-      <div className="mb-3 mx-5 d-flex justify-content-center">
+      <div className="mb-3 mx-2 d-flex flex-column align-items-center">
         <input
           type="text"
           className="form-control  max-width-200 w-75"
