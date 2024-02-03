@@ -12,6 +12,10 @@ function App() {
     }
   };
 
+  const removeTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
+
   return (
     <div className="App">
       <h1>Todo List</h1>
@@ -35,6 +39,7 @@ function App() {
               {task.text}
             </span>
             <input type="checkbox" checked={task.completed} />
+            <button onClick={() => removeTask(task.id)}>Remove</button>
           </li>
         ))}
       </ul>
