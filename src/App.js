@@ -16,6 +16,14 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
+  const checkTask = (taskId) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
+
   return (
     <div className="App">
       <h1>Todo List</h1>
@@ -38,7 +46,11 @@ function App() {
             >
               {task.text}
             </span>
-            <input type="checkbox" checked={task.completed} />
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => checkTask(task.id)}
+            />
             <button onClick={() => removeTask(task.id)}>Remove</button>
           </li>
         ))}
