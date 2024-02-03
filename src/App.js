@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import TaskInput from "./components/TaskInput";
+import FilterButtons from "./components/FilterButtons";
 import "./App.css";
 
 function App() {
@@ -67,45 +69,8 @@ function App() {
   return (
     <div className="App">
       <h1>Todo List</h1>
-      <div className="mb-3 mx-2 d-flex flex-column align-items-center">
-        <input
-          type="text"
-          className="form-control  max-width-200 w-75"
-          style={{ backgroundColor: "#99c8ff", borderColor: "#99c8ff" }}
-          placeholder="Add a new task..."
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-        />
-        <button className="btn btn-primary mx-2" onClick={addTask}>
-          Add task
-        </button>
-        <div className="mb-3 d-flex justify-content-center">
-          <button
-            className={`btn btn-outline-primary mx-2 ${
-              filter === "all" && "active"
-            }`}
-            onClick={() => setFilter("all")}
-          >
-            All
-          </button>
-          <button
-            className={`btn btn-outline-success mx-2 ${
-              filter === "completed" && "active"
-            }`}
-            onClick={() => setFilter("completed")}
-          >
-            Completed
-          </button>
-          <button
-            className={`btn btn-outline-danger mx-2 ${
-              filter === "uncompleted" && "active"
-            }`}
-            onClick={() => setFilter("uncompleted")}
-          >
-            Uncompleted
-          </button>
-        </div>
-      </div>
+      <TaskInput newTask={newTask} setNewTask={setNewTask} addTask={addTask} />
+      <FilterButtons filter={filter} setFilter={setFilter} />
       <ul className="mb-3 mx-5 justify-content-center list-unstyled">
         {filteredTasks.map((task) => (
           <li
